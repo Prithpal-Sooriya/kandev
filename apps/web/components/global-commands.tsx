@@ -16,7 +16,6 @@ import {
   IconFolder,
   IconMessageCircle,
   IconSparkles,
-  IconBrandGithub,
 } from "@tabler/icons-react";
 import { useRegisterCommands } from "@/hooks/use-register-commands";
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut";
@@ -59,14 +58,6 @@ function buildNavigationCommands(push: PushFn): CommandItem[] {
       icon: <IconChartBar className="size-3.5" />,
       keywords: ["stats", "analytics", "metrics"],
       action: () => push("/stats"),
-    },
-    {
-      id: "nav-github",
-      label: "Go to GitHub Dashboard",
-      group: "Navigation",
-      icon: <IconBrandGithub className="size-3.5" />,
-      keywords: ["github", "dashboard", "pr", "pull request", "review"],
-      action: () => push("/github"),
     },
     {
       id: "settings-agents",

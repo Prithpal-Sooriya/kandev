@@ -12,7 +12,6 @@ import {
   IconCpu,
   IconKey,
   IconMessageCircle,
-  IconBrandGithub,
   IconBrandSlack,
   IconHexagon,
   IconSparkles,
@@ -149,8 +148,7 @@ function WorkspacesSidebarSection({ pathname, workspaces }: WorkspacesSidebarSec
 }
 
 function IntegrationsSidebarSection({ pathname }: { pathname: string }) {
-  const items: Array<{ href: string; label: string; Icon: typeof IconBrandGithub }> = [
-    { href: "/settings/integrations/github", label: "GitHub", Icon: IconBrandGithub },
+  const items: Array<{ href: string; label: string; Icon: typeof IconTicket }> = [
     { href: "/settings/integrations/jira", label: "Jira", Icon: IconTicket },
     { href: "/settings/integrations/linear", label: "Linear", Icon: IconHexagon },
     { href: "/settings/integrations/slack", label: "Slack", Icon: IconBrandSlack },

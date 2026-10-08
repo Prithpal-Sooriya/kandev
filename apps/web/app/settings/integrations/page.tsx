@@ -1,14 +1,11 @@
 import Link from "next/link";
-import { IconBrandGithub, IconBrandSlack, IconHexagon, IconTicket } from "@tabler/icons-react";
+import { IconBrandSlack, IconHexagon, IconTicket } from "@tabler/icons-react";
 import { Card, CardContent } from "@kandev/ui/card";
 
+// GitHub is intentionally not listed here: its browsing/watch surfaces were
+// removed to cut GitHub API usage. GitHub auth (gh CLI / GITHUB_TOKEN env)
+// still powers task creation from GitHub URLs and PR auto-attach.
 const INTEGRATIONS = [
-  {
-    href: "/settings/integrations/github",
-    label: "GitHub",
-    description: "PR review queues, issue watchers, and OAuth credentials.",
-    Icon: IconBrandGithub,
-  },
   {
     href: "/settings/integrations/jira",
     label: "Jira",

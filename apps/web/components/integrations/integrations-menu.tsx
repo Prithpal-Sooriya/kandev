@@ -11,17 +11,19 @@ import {
   DropdownMenuTrigger,
 } from "@kandev/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@kandev/ui/tooltip";
-import { IconBrandGithub, IconHexagon, IconPlugConnected, IconTicket } from "@tabler/icons-react";
+import { IconHexagon, IconPlugConnected, IconTicket } from "@tabler/icons-react";
 import { useJiraAvailable } from "@/hooks/domains/jira/use-jira-availability";
 import { useLinearAvailable } from "@/hooks/domains/linear/use-linear-availability";
-import { useGitHubStatus } from "@/hooks/domains/github/use-github-status";
-import type { GitHubStatus } from "@/lib/types/github";
 
 type MobileIntegrationsSectionProps = {
   onNavigate: () => void;
 };
 
-type IntegrationId = "github" | "jira" | "linear";
+// GitHub is intentionally absent from this menu: its dashboard/watch
+// surfaces were removed to cut GitHub API usage, and probing GitHub status
+// on every app load cost API quota. GitHub still powers task creation from
+// GitHub URLs and PR auto-attach on tasks.
+type IntegrationId = "jira" | "linear";
 
 type IntegrationLink = {
   id: IntegrationId;
@@ -30,55 +32,37 @@ type IntegrationLink = {
 };
 
 type IntegrationAvailability = {
-  githubReady: boolean;
   jiraAvailable: boolean;
   linearAvailable: boolean;
 };
 
 const INTEGRATION_LINKS: IntegrationLink[] = [
-  { id: "github", label: "GitHub", href: "/github" },
   { id: "jira", label: "Jira", href: "/jira" },
   { id: "linear", label: "Linear", href: "/linear" },
 ];
 
 const INTEGRATION_ICONS = {
-  github: IconBrandGithub,
   jira: IconTicket,
   linear: IconHexagon,
-} satisfies Record<IntegrationId, typeof IconBrandGithub>;
+} satisfies Record<IntegrationId, typeof IconTicket>;
 
 const HOVER_CLOSE_DELAY_MS = 180;
 
 export function getAvailableIntegrationLinks({
-  githubReady,
   jiraAvailable,
   linearAvailable,
 }: IntegrationAvailability): IntegrationLink[] {
   return INTEGRATION_LINKS.filter((link) => {
-    if (link.id === "github") return githubReady;
     if (link.id === "jira") return jiraAvailable;
     return linearAvailable;
   });
 }
 
-function getStatusLabel(loading: boolean | undefined): string {
-  return loading ? "Checking" : "Setup";
-}
-
-export function getGitHubIntegrationStatus(status: GitHubStatus | null, loading: boolean) {
-  if (status?.authenticated) return { ready: true, label: "Connected" };
-  if (status?.token_configured) return { ready: true, label: "Configured" };
-  return { ready: false, label: getStatusLabel(loading) };
-}
-
 function useConfiguredIntegrationLinks(): IntegrationLink[] {
-  const { status, loading } = useGitHubStatus();
   const jiraAvailable = useJiraAvailable();
   const linearAvailable = useLinearAvailable();
-  const githubStatus = getGitHubIntegrationStatus(status, loading);
 
   return getAvailableIntegrationLinks({
-    githubReady: githubStatus.ready,
     jiraAvailable,
     linearAvailable,
   });

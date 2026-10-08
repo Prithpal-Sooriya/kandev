@@ -53,7 +53,10 @@ type SecretManager interface {
 }
 
 // prSyncFreshnessWindow is how long PR data is considered fresh (skip GitHub API).
-const prSyncFreshnessWindow = 30 * time.Second
+// The background PR-watch poller refreshes TaskPR rows on its own cadence, so
+// a multi-minute window lets UI-driven syncs (workspace PR list on page load,
+// task PR sync on open) reuse that data instead of re-hitting the API.
+const prSyncFreshnessWindow = 5 * time.Minute
 
 // Service coordinates GitHub integration operations.
 type Service struct {
